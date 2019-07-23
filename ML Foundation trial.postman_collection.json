@@ -1,0 +1,167 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ML Foundation trial",
+		"_postman_id": "7d14683b-5c6d-db70-7a3e-f9a5b3d08c9d",
+		"description": "Data Halloween 2018",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"token\", JSON.parse(responseBody).access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "https://027596.authentication.eu10.hana.ondemand.com/oauth/token?grant_type=client_credentials",
+					"protocol": "https",
+					"host": [
+						"027596",
+						"authentication",
+						"eu10",
+						"hana",
+						"ondemand",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRF-Token",
+						"value": "Fetch",
+						"description": ""
+					},
+					{
+						"key": "grant_type",
+						"value": "client_credentials",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic c2ItNzk4YzBhMDEtOWMwMC00YmE4LWJhYTAtMzMwZjA0YzljNTA2IWI5MTYwfGZvdW5kYXRpb24tc3RkLW1sZnRyaWFsIWIzNDEwOmFaUVNlL3pLTHgxbXBKUHVpNTdBOTdyS1ZPbz0=",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "people detection",
+			"request": {
+				"url": "https://mlftrial-human-detection.cfapps.eu10.hana.ondemand.com/api/v2alpha1/image/human-detection/format:image",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/octet-stream",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "human2-1.jpg"
+						}
+					]
+				},
+				"description": "By using automated translation capabilities, the service translates multiple translation units from a source language into multiple target languages. All parameters in the request are required."
+			},
+			"response": []
+		},
+		{
+			"name": "Image classifier",
+			"request": {
+				"url": "https://mlftrial-image-classifier.cfapps.eu10.hana.ondemand.com/api/v2/image/classification",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/octet-stream"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "multipart/form-data"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": "",
+							"value": ""
+						},
+						{
+							"key": "options",
+							"value": "{\"lang\": \"ru\", \"outputType\": \"txt\", \"pageSegMode\": \"1\", \"modelType\": \"lstmPrecise\"}",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "By using automated translation capabilities, the service translates multiple translation units from a source language into multiple target languages. All parameters in the request are required."
+			},
+			"response": []
+		},
+		{
+			"name": "translation",
+			"request": {
+				"url": "https://mlftrial-machine-translation.cfapps.eu10.hana.ondemand.com/api/v2/text/translation",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json;charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sourceLanguage\": \"en\",\r\n    \"targetLanguages\": [\r\n        \"de\",\r\n        \"fr\"\r\n    ],\r\n    \"units\": [\r\n        {\r\n            \"value\": \"It is not possible to add products to the shopping cart.\",\r\n            \"key\": \"NO_ADD_PROD_CART\"\r\n        },\r\n        {\r\n            \"value\": \"The order terminates when you save the delivery address.\",\r\n            \"key\": \"SAVE_DEL_ADDRESS_TERMINATE\"\r\n        }\r\n    ]\r\n}"
+				},
+				"description": "By using automated translation capabilities, the service translates multiple translation units from a source language into multiple target languages. All parameters in the request are required."
+			},
+			"response": []
+		}
+	]
+}
